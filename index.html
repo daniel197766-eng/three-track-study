@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>三軌學習 Quiz</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f6f8;margin:0;color:#1f2937}main{max-width:760px;margin:auto;padding:24px}.card{background:#fff;border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 2px 12px #0001}h1{margin-bottom:4px}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tab{border:0;border-radius:12px;padding:12px 14px;font-weight:700;cursor:pointer}.tab.active{background:#111827;color:#fff}.opt{display:block;border:1px solid #d1d5db;border-radius:12px;padding:12px;margin:9px 0;cursor:pointer}.opt:has(input:checked){border:2px solid #2563eb;background:#eff6ff}button.check{background:#2563eb;color:white;border:0;border-radius:12px;padding:12px 18px;font-weight:700;font-size:16px;cursor:pointer}.result{margin-top:12px;font-weight:700}.ok{color:#15803d}.bad{color:#b91c1c}.muted{color:#6b7280}.hidden{display:none}.progress{font-size:14px;color:#6b7280}
+</style></head><body><main>
+<h1>三軌學習 Quiz</h1><p class="muted">固定學習入口｜點選答案 → 確認 → 即時解析</p>
+<div class="tabs"><button class="tab active" onclick="track(1)">① 高中同等學力</button><button class="tab" onclick="track(2)">② 就服乙級 19500</button><button class="tab" onclick="track(3)">③ 移工仲介實務</button></div>
+<section id="t1">
+<div class="card"><div class="progress">英文｜第 2 單元｜do / does + 動詞原形</div><h2>重點</h2><p>I / You / We / They → <b>do / don't</b><br>He / She / It → <b>does / doesn't</b><br>用了 does / doesn't，後面的動詞回到原形。</p></div>
+<div id="quiz"></div><div class="card"><button class="check" onclick="grade()">確認答案</button><div id="score" class="result"></div></div>
+</section>
+<section id="t2" class="hidden"><div class="card"><h2>② 就服乙級 19500</h2><p>目前進度已保留。下一次輪到此軌時更新題目。</p></div></section>
+<section id="t3" class="hidden"><div class="card"><h2>③ 移工仲介實務</h2><p>目前進度已保留。下一次輪到此軌時更新情境題。</p></div></section>
+</main><script>
+const qs=[
+["He ___ to work by motorcycle every day.",["go","goes","going","gone"],1,"He 是第三人稱單數，肯定句用 goes。"],
+["She doesn't ___ on Sundays.",["works","work","worked","working"],1,"doesn't 後面的動詞必須用原形 work。"],
+["___ he work at this factory?",["Do","Does","Is","Are"],1,"主詞 he 的一般動詞問句使用 Does；work 保持原形。"],
+["They ___ need more workers right now.",["doesn't","isn't","don't","does"],2,"They 使用 do / don't，所以答案是 don't。"]
+];
+function render(){let h="";qs.forEach((q,i)=>{h+=`<div class="card"><h3>${i+1}. ${q[0]}</h3>`;q[1].forEach((o,j)=>h+=`<label class="opt"><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${o}</label>`);h+=`<div id="r${i}" class="result"></div></div>`});document.getElementById("quiz").innerHTML=h}
+function grade(){let n=0;qs.forEach((q,i)=>{let x=document.querySelector('input[name="q'+i+'"]:checked'),r=document.getElementById("r"+i);if(!x){r.className="result bad";r.textContent="尚未作答";return}if(+x.value===q[2]){n++;r.className="result ok";r.textContent="✓ 正確｜"+q[3]}else{r.className="result bad";r.textContent="✗ 再複習｜"+q[3]}});document.getElementById("score").textContent="本單元："+n+" / "+qs.length+"。到此停止，不追加題目。";localStorage.setItem("english-unit2-score",n)}
+function track(n){document.querySelectorAll("section").forEach(x=>x.classList.add("hidden"));document.getElementById("t"+n).classList.remove("hidden");document.querySelectorAll(".tab").forEach((x,i)=>x.classList.toggle("active",i===n-1))}
+render();
+</script></body></html>
